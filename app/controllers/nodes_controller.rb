@@ -34,6 +34,6 @@ class NodesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def node_params
-      params.require(:node).permit(:game_id, :description)
+      params.require(:node).permit(:game_id, :description, :start_point, :end_point)
     end
 end
