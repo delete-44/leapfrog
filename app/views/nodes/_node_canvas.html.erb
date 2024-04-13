@@ -2,15 +2,8 @@
   <% game.nodes.each do |node| %>
     <button data-action="node-editor#selectNode"
             data-node-id="<%= node.id %>"
-            data-node-description="<%= node.description %>"
-            class="px-0.5 py-1 max-w-[100px] min-w-[60px] bg-purple-100 rounded border border-purple-200">
-              <%= node.id %>
-              <% if node.description.present? %>
-                <hr class="border-purple-200" />
-                <p class="truncate">
-                  <%= node.description %>
-                </p>
-              <% end %>
+            data-node-description="<%= node.description %>">
+              <%= render node %>
             </button>
   <% end %>
 </section>

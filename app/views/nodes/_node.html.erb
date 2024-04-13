@@ -1,0 +1,9 @@
+<section class="px-0.5 text-center py-1 max-w-[100px] min-w-[60px] bg-purple-100 rounded border border-purple-200">
+  <%= node.id %>
+  <% if node.description.present? %>
+    <hr class="border-purple-200" />
+    <p class="truncate">
+      <%= node.description %>
+    </p>
+  <% end %>
+</section>
