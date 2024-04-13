@@ -2,11 +2,27 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="node-editor"
 export default class extends Controller {
+  static targets = ["formContainer"];
+
   connect() {
     console.log("Connected");
   }
 
-  selectNode(event) {
+  async selectNode(event) {
+    event.preventDefault();
+    const nodeId = event.currentTarget.dataset.nodeId;
+
+    // Using native fetch API
+    fetch(`/nodes/${nodeId}/edit`)
+      .then((response) => response.text())
+      .then((html) => {
+        this.formContainerTarget.classList.remove("opacity-0");
+        this.formContainerTarget.innerHTML = html;
+      })
+      .catch((error) => console.error("Error fetching form:", error));
+  }
+
+  selectNodex(event) {
     event.preventDefault();
 
     const button = event.currentTarget;

@@ -9,7 +9,9 @@
       <%= form.submit class: "mb-8 w-full rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
     <% end %>
 
-    <%= render partial: 'nodes/form', locals: { node: Node.new } %>
+    <div class="opacity-0" data-node-editor-target="formContainer">
+      <%= render partial: 'nodes/form', locals: { node: Node.new } %>
+    </div>
 
     <%= link_to "Play this game", @game, class: "mt-16 rounded-lg py-3 px-5 bg-gray-200 inline-block font-medium" %>
     <%= link_to "Back to games", games_path, class: "rounded-lg py-3 px-5 bg-gray-200 inline-block font-medium" %>

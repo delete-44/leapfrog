@@ -1,5 +1,5 @@
 class NodesController < ApplicationController
-  before_action :set_node, only: %i[update]
+  before_action :set_node, only: %i[edit update]
 
   # POST /nodes
   def create
@@ -10,6 +10,11 @@ class NodesController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  # SSR for the edit form
+  def edit
+    render partial: "nodes/form", locals: { node: @node }
   end
 
   # PATCH/PUT /nodes/1
