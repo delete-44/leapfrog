@@ -6,6 +6,6 @@ export default class extends Controller {
   }
 
   handleClick() {
-    this.element.textContent = "Clicked!";
+    this.element.textContent = "Clicked, but new";
   }
 }
