@@ -10,21 +10,16 @@ class GamesController < ApplicationController
   def show
   end
 
-  # GET /games/new
-  def new
-    @game = Game.new
-  end
-
   # GET /games/1/edit
   def edit
   end
 
   # POST /games
   def create
-    @game = Game.new(game_params)
+    @game = Game.new
 
     if @game.save
-      redirect_to @game, notice: "Game was successfully created."
+      redirect_to edit_game_path(@game), notice: "Game was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -53,6 +48,6 @@ class GamesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def game_params
-      params.require(:game).permit(:node_id)
+      params.require(:game)
     end
 end

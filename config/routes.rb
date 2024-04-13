@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :games
+  resources :games, except: %i[new]
   root "games#index"
-  resources :games, only: %i[index]
 end
