@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="node-editor"
 export default class extends Controller {
-  static targets = ["formContainer"];
+  static targets = ["formContainer", "node"];
 
   connect() {
     console.log("Connected");
@@ -22,34 +22,64 @@ export default class extends Controller {
       .catch((error) => console.error("Error fetching form:", error));
   }
 
-  selectNodex(event) {
+  startConnection(event) {
     event.preventDefault();
 
-    const button = event.currentTarget;
-    const nodeId = button.dataset.nodeId;
-    const nodeDescription = button.dataset.nodeDescription;
+    const parentNodeId = event.currentTarget.dataset.parentNodeId;
 
-    const form = document.getElementById("node-form");
+    // Add glow effect & update action for valid targets
+    this.nodeTargets.forEach((el) => {
+      if (el.dataset.nodeId === parentNodeId) {
+        return;
+      }
 
-    form.classList.remove("opacity-0");
+      el.classList.add("shadow-lg");
+      el.classList.add("shadow-purple-200");
+      el.dataset.parentNodeId = parentNodeId;
+      el.dataset.action = "node-editor#finishConnection";
+    });
+  }
 
-    const descriptionTextArea = form.querySelector(
-      "[name='node[description]']"
-    );
-    const methodInput = form.querySelector("[name='_method']");
+  // STUB i hate this
+  finishConnection(event) {
+    event.preventDefault();
 
-    form.action = `/nodes/${nodeId}`;
-    descriptionTextArea.value = nodeDescription;
+    const parentNodeId = event.currentTarget.dataset.parentNodeId;
+    const childNodeId = event.currentTarget.dataset.nodeId;
 
-    // Set up the form for an update operation
-    if (methodInput) {
-      methodInput.value = "patch";
-    } else {
-      const hiddenMethodInput = document.createElement("input");
-      hiddenMethodInput.setAttribute("type", "hidden");
-      hiddenMethodInput.setAttribute("name", "_method");
-      hiddenMethodInput.setAttribute("value", "patch");
-      form.appendChild(hiddenMethodInput);
-    }
+    this.postConnection(parentNodeId, childNodeId);
+  }
+
+  postConnection(parentNodeId, childNodeId) {
+    // Retrieve CSRF Token from the meta tag
+    const csrfToken = document
+      .querySelector("[name='csrf-token']")
+      .getAttribute("content");
+
+    fetch("/connections", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken, // Ensure CSRF token is included for Rails authenticity
+      },
+      body: JSON.stringify({
+        connection: {
+          parent_node_id: parentNodeId,
+          child_node_id: childNodeId,
+        },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 }

@@ -10,3 +10,10 @@
     <%= render node.connections, node: node %>
   </ul>
 <% end %>
+
+<button data-action="node-editor#startConnection"
+        data-parent-node-id="<%= node.id %>"
+        class="inline-block py-3 px-5 font-medium bg-gray-200 rounded-lg"
+        >
+          Start connection
+        </button>
