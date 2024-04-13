@@ -1,0 +1,27 @@
+<div class="flex mx-auto w-full md:w-2/3">
+  <div class="mx-auto">
+
+    <section class="px-6 py-12 bg-white rounded border border-gray-200">
+      <%= @current_node.description %>
+    </section>
+
+    <% @current_node.parent_connections.each do |connection| %>
+      <%= form_with(model: Player.first, class: "contents") do |form| %>
+        <%= form.hidden_field :current_node_id, value: connection.child_node.id %>
+        <%= form.submit value: "Go to #{connection.child_node.id}", class: "mb-8 w-full rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <% end %>
+    <% end %>
+
+
+    Or there are some doors going backwards...
+
+    <% @current_node.child_connections.each do |connection| %>
+      <%= form_with(model: Player.first, class: "contents") do |form| %>
+        <%= form.hidden_field :current_node_id, value: connection.parent_node.id %>
+        <%= form.submit value: "Go to #{connection.parent_node.id}", class: "mb-8 w-full rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <% end %>
+    <% end %>
+
+    <%= link_to "Back to games", games_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-200 inline-block font-medium" %>
+  </div>
+</div>

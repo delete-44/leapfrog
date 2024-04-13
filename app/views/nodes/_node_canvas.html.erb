@@ -1,0 +1,10 @@
+<section class="p-1 w-2/3 h-full bg-white">
+  <% game.nodes.each do |node| %>
+    <button data-action="node-editor#selectNode"
+            data-node-id="<%= node.id %>"
+            data-node-editor-target="node"
+            >
+              <%= render node %>
+            </button>
+  <% end %>
+</section>

@@ -1,0 +1,26 @@
+<%= form_with(model: node, class: "flex flex-col w-full") do |form| %>
+  <%= form.label :description %>
+  <%= form.text_area :description, value: node.description %>
+
+  <%= form.check_box :start_point, checked: node.start_point? %>
+  <%= form.label :start_point %>
+
+  <%= form.check_box :end_point, checked: node.end_point? %>
+  <%= form.label :end_point %>
+
+  <%= form.submit value: "Update", class: "mt-4 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+<% end %>
+
+<% if node.connections.any? %>
+  <p>Connections</p>
+  <ul>
+    <%= render node.connections, node: node %>
+  </ul>
+<% end %>
+
+<button data-action="node-editor#startConnection"
+        data-parent-node-id="<%= node.id %>"
+        class="inline-block py-3 px-5 font-medium bg-gray-200 rounded-lg"
+        >
+          Start connection
+        </button>
