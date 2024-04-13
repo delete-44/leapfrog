@@ -8,6 +8,13 @@ class GamesController < ApplicationController
 
   # GET /games/1
   def show
+    if Player.any?
+      @player = Player.first
+    else
+      @player = Player.create(current_node: @game.starting_node)
+    end
+
+    @current_node = @player.current_node
   end
 
   # GET /games/1/edit

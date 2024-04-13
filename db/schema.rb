@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_13_180532) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_13_180926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,8 +41,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_13_180532) do
     t.index ["game_id"], name: "index_nodes_on_game_id"
   end
 
+  create_table "players", force: :cascade do |t|
+    t.bigint "current_node_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["current_node_id"], name: "index_players_on_current_node_id"
+  end
+
   add_foreign_key "connections", "nodes", column: "child_node_id"
   add_foreign_key "connections", "nodes", column: "parent_node_id"
   add_foreign_key "games", "nodes", column: "starting_node_id"
   add_foreign_key "nodes", "games"
+  add_foreign_key "players", "nodes", column: "current_node_id"
 end
